@@ -47,22 +47,38 @@ galima_nuvaziuoti(Miestas1,Miestas2,3).
 
 % 5.3. - dalybos liekana (mod).
 
-%Pradinis atvejis: jei dalinys mažesnis už daliklį, dalinys yra liekana(jei abu neneigiami).
-mod(Dalinys, Daliklis, Dalinys) :- Dalinys < Daliklis, Dalinys >= 0.
+%Dalyba iš nulio negalima
+mod(_, 0, _) :-
+    throw(error(division_by_zero)).
 
-%Atvejis, kai daliklis neigiamas. Liekana turi tai atspindėti.
+% Apibrėžti liekanos (mod) predikatą
 mod(Dalinys, Daliklis, Mod) :-
-    Daliklis < 0,
-    mod(Dalinys, -Daliklis, Mod).
-
-%Rekursyvus atvejis: atimame daliklį iš dalinio tol, kol dalinys tampa mažesnis už daliklį.
-mod(Dalinys, Daliklis, Mod) :-
-    Dalinys >= Daliklis,
-    Dalinys1 is Dalinys - Daliklis,
-    mod(Dalinys1, Daliklis, Mod).
-
-%Atvejis, kai dalinys neigiamas. Rezultatas turi buti visada teigiamas.
-mod(Dalinys, Daliklis, Mod) :-
+    Daliklis \= 0,
+    modulis(Daliklis, DaliklioModulis),
+    mod_rekursinis(Dalinys, DaliklioModulis, Mod).
+        
+% Bazinis atvejis: kai Dalinys yra tarp 0 ir DaliklioModulis
+mod_rekursinis(Dalinys, DaliklioModulis, Dalinys) :-
+    Dalinys >= 0,
+    Dalinys < DaliklioModulis.
+    
+% Rekursinis atvejis: atimti DaliklioModulis iš Dalinys, jei Dalinys >= DaliklioModulis
+mod_rekursinis(Dalinys, DaliklioModulis, Mod) :-
+    Dalinys >= DaliklioModulis,
+    NaujasDalinys is Dalinys - DaliklioModulis,
+    mod_rekursinis(NaujasDalinys, DaliklioModulis, Mod).
+    
+% Rekursinis atvejis: pridėti DaliklioModulis prie Dalinys, jei Dalinys < 0
+mod_rekursinis(Dalinys, DaliklioModulis, Mod) :-
     Dalinys < 0,
-    Dalinys1 is Dalinys + Daliklis,
-    mod(Dalinys1, Daliklis, Mod).
+    NaujasDalinys is Dalinys + DaliklioModulis,
+    mod_rekursinis(NaujasDalinys, DaliklioModulis, Mod).
+    
+% Pagalbinis predikatas absoliutinei reikšmei apskaičiuoti
+modulis(Dalinys, Modulis) :-
+    Dalinys >= 0,
+    Modulis = Dalinys.
+    
+modulis(Dalinys, Modulis) :-
+    Dalinys < 0,
+    Modulis is -Dalinys.
