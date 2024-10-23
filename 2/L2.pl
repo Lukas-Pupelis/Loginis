@@ -24,17 +24,6 @@ kelias(panevezys, pakruojis, 50).
 kelias(panevezys, pasvalys, 40).
 
 /* 
-   Predikatas galima_nuvaziuoti(Miestas1, Miestas2) nustato, ar galima nuvažiuoti 
-   iš miesto Miestas1 į miestą Miestas2 per bet kokį skaičių tarpinių miestų.
-*/
-galima_nuvaziuoti(Miestas1, Miestas2) :-
-    kelias(Miestas1, Miestas2, _).
-
-galima_nuvaziuoti(Miestas1, Miestas2) :-
-    kelias(Miestas1, TarpinisMiestas, _),
-    galima_nuvaziuoti(TarpinisMiestas, Miestas2).
-
-/* 
    Predikatas galima_nuvaziuoti(Miestas1, Miestas2, N) nustato, ar galima nuvažiuoti 
    iš miesto Miestas1 į miestą Miestas2 praeinant būtent N tarpinių miestų.
    
