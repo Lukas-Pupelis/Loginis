@@ -1,5 +1,6 @@
 % Autorius: Lukas Pupelis 2110612
 % 4 kursas 4 grupė
+% 2 užduotis
 % Variantai: 1.5, 5.3.
 
 % 1.5. - pravažiavus lygiai N tarpinių miestų.
