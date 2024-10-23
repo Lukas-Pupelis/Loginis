@@ -56,7 +56,7 @@ mod(Dalinys, Daliklis, Mod) :-
     Daliklis \= 0,
     modulis(Daliklis, DaliklioModulis),
     mod_rekursinis(Dalinys, DaliklioModulis, Mod).
-        
+    
 % Bazinis atvejis: kai Dalinys yra tarp 0 ir DaliklioModulis
 mod_rekursinis(Dalinys, DaliklioModulis, Dalinys) :-
     Dalinys >= 0,
@@ -74,7 +74,7 @@ mod_rekursinis(Dalinys, DaliklioModulis, Mod) :-
     NaujasDalinys is Dalinys + DaliklioModulis,
     mod_rekursinis(NaujasDalinys, DaliklioModulis, Mod).
     
-% Pagalbinis predikatas absoliutinei reikšmei apskaičiuoti
+% Pagalbinis predikatas modulio reikšmei apskaičiuoti
 modulis(Dalinys, Modulis) :-
     Dalinys >= 0,
     Modulis = Dalinys.
