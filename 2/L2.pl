@@ -38,3 +38,9 @@ galima_nuvaziuoti(Miestas1, Miestas2, N) :-
     kelias(Miestas1, TarpinisMiestas, _),
     N1 is N - 1,
     galima_nuvaziuoti(TarpinisMiestas, Miestas2, N1).
+
+/* pvz.
+galima_nuvaziuoti(vilnius,pasvalys,4).
+galima_nuvaziuoti(vilnius,Miestas,4).
+galima_nuvaziuoti(Miestas1,Miestas2,3).
+*/
