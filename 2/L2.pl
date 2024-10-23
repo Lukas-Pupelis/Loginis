@@ -31,8 +31,8 @@ galima_nuvaziuoti(Miestas1, Miestas2) :-
     kelias(Miestas1, Miestas2, _).
 
 galima_nuvaziuoti(Miestas1, Miestas2) :-
-    kelias(Miestas1, Z, _),
-    galima_nuvaziuoti(Z, Miestas2).
+    kelias(Miestas1, TarpinisMiestas, _),
+    galima_nuvaziuoti(TarpinisMiestas, Miestas2).
 
 /* 
    Predikatas galima_nuvaziuoti(Miestas1, Miestas2, N) nustato, ar galima nuvažiuoti 
@@ -46,6 +46,6 @@ galima_nuvaziuoti(Miestas1, Miestas2, N) :-
 
 galima_nuvaziuoti(Miestas1, Miestas2, N) :-
     N > 0,
-    kelias(Miestas1, Z, _),
+    kelias(Miestas1, TarpinisMiestas, _),
     N1 is N - 1,
-    galima_nuvaziuoti(Z, Miestas2, N1).
+    galima_nuvaziuoti(TarpinisMiestas, Miestas2, N1).
