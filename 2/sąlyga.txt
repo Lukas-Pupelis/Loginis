@@ -1,0 +1,21 @@
+variantas: 1.5, 5.3
+1.5. - pravažiavus lygiai N tarpinių miestų.
+
+1. - Duotas miestus jungiančių kelių tinklas.
+Keliai vienakrypčiai, nesudarantys ciklų.
+Kiekvienas kelias turi savo ilgį.
+Ši informacija išreiškiama faktais kelias(Miestas1, Miestas2, Atstumas).
+Apibrėžkite predikatą „galima nuvažiuoti iš miesto X į miestą Y“:
+
+1.5. - pravažiavus lygiai N tarpinių miestų.
+
+Pastaba: Jokiu būdu nenaudokite Binė formulės ar kokio nors kito būdo,
+apskaičiuojančio skaičių nenaudojant rekursijos.
+5. - Apibrėžkite predikatą realizuojantį nurodytą sveikaskaitę operaciją nenaudodami daugybos (*, **) 
+ir dalybos (/, div, mod) Prolog operatorių.
+Predikatuose, realizuojančiuose dalybą, vadovaukitės Euklidinės dalybos apibrėžimu:
+https://en.wikipedia.org/wiki/Euclidean_division
+
+5.3. - dalybos liekana (mod). Pavyzdžiui:
+?- mod(7,-3,Mod).
+Mod = 1.
