@@ -51,34 +51,41 @@ galima_nuvaziuoti(Miestas1,Miestas2,3).
 mod(_, 0, _) :-
     throw(error(division_by_zero)).
 
-% Apibrėžti liekanos (mod) predikatą
+% Pradedame skaičiuoti liekaną - iš pradžių gauname daliklio modulį, po to skaičiuojame liekaną
 mod(Dalinys, Daliklis, Mod) :-
     Daliklis \= 0,
     modulis(Daliklis, DaliklioModulis),
-    mod_rekursinis(Dalinys, DaliklioModulis, Mod).
+    liekana(Dalinys, DaliklioModulis, Mod).
     
 % Bazinis atvejis: kai Dalinys yra tarp 0 ir DaliklioModulis
-mod_rekursinis(Dalinys, DaliklioModulis, Dalinys) :-
+liekana(Dalinys, DaliklioModulis, Dalinys) :-
     Dalinys >= 0,
     Dalinys < DaliklioModulis.
     
 % Rekursinis atvejis: atimti DaliklioModulis iš Dalinys, jei Dalinys >= DaliklioModulis
-mod_rekursinis(Dalinys, DaliklioModulis, Mod) :-
+liekana(Dalinys, DaliklioModulis, Mod) :-
     Dalinys >= DaliklioModulis,
-    NaujasDalinys is Dalinys - DaliklioModulis,
-    mod_rekursinis(NaujasDalinys, DaliklioModulis, Mod).
+    NaujasDalinys is (Dalinys - DaliklioModulis),
+    liekana(NaujasDalinys, DaliklioModulis, Mod).
     
 % Rekursinis atvejis: pridėti DaliklioModulis prie Dalinys, jei Dalinys < 0
-mod_rekursinis(Dalinys, DaliklioModulis, Mod) :-
+liekana(Dalinys, DaliklioModulis, Mod) :-
     Dalinys < 0,
-    NaujasDalinys is Dalinys + DaliklioModulis,
-    mod_rekursinis(NaujasDalinys, DaliklioModulis, Mod).
+    NaujasDalinys is (Dalinys + DaliklioModulis),
+    liekana(NaujasDalinys, DaliklioModulis, Mod).
     
 % Pagalbinis predikatas modulio reikšmei apskaičiuoti
-modulis(Dalinys, Modulis) :-
-    Dalinys >= 0,
-    Modulis = Dalinys.
+modulis(Daliklis, Modulis) :-
+    Daliklis >= 0,
+    Modulis = Daliklis.
     
-modulis(Dalinys, Modulis) :-
-    Dalinys < 0,
-    Modulis is -Dalinys.
+modulis(Daliklis, Modulis) :-
+    Daliklis < 0,
+    Modulis is -Daliklis.
+
+/* pvz.
+mod(7,3,Mod).
+mod(7,-3,Mod).
+mod(-7,3,Mod).
+mod(-7,-3,Mod).
+*/
