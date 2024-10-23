@@ -44,3 +44,25 @@ galima_nuvaziuoti(vilnius,pasvalys,4).
 galima_nuvaziuoti(vilnius,Miestas,4).
 galima_nuvaziuoti(Miestas1,Miestas2,3).
 */
+
+% 5.3. - dalybos liekana (mod).
+
+%Pradinis atvejis: jei dalinys mažesnis už daliklį, dalinys yra liekana(jei abu neneigiami).
+mod(Dalinys, Daliklis, Dalinys) :- Dalinys < Daliklis, Dalinys >= 0.
+
+%Atvejis, kai daliklis neigiamas. Liekana turi tai atspindėti.
+mod(Dalinys, Daliklis, Mod) :-
+    Daliklis < 0,
+    mod(Dalinys, -Daliklis, Mod).
+
+%Rekursyvus atvejis: atimame daliklį iš dalinio tol, kol dalinys tampa mažesnis už daliklį.
+mod(Dalinys, Daliklis, Mod) :-
+    Dalinys >= Daliklis,
+    Dalinys1 is Dalinys - Daliklis,
+    mod(Dalinys1, Daliklis, Mod).
+
+%Atvejis, kai dalinys neigiamas. Rezultatas turi buti visada teigiamas.
+mod(Dalinys, Daliklis, Mod) :-
+    Dalinys < 0,
+    Dalinys1 is Dalinys + Daliklis,
+    mod(Dalinys1, Daliklis, Mod).
