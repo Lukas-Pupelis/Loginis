@@ -1,0 +1,26 @@
+1.2; 2.1; 3.4; 4.4
+
+1.2. lyginiai(S) - teisingas, kai visi duoto sveikųjų skaičių sąrašo S elementai
+yra lyginiai. Pavyzdžiui:
+?- lyginiai([4,18,24,10]).
+
+true.
+
+2.1. nr(S,K,E) - E yra K-asis sąrašo S elementas. Pavyzdžiui:
+?- nr([a,b,c,d,e],3,E).
+
+E = c.
+
+3.4. kartojasi(S,R) - sąrašas R susideda iš duotojo sąrašo S
+pasikartojančių elementų. Pavyzdžiui:
+?- kartojasi([a,b,a,d,a,d],R).
+
+R = [a,d].
+
+4.4. is_sesiolik(Ses,Des) - Ses yra skaičius vaizduojami
+šešioliktainių skaitmenų sąrašu.
+Des - tas pats skaičiaus, vaizduojamas dešimtainių skaitmenų sąrašu.
+Pavyzdžiui:
+?- is_sesiolik([7,c,1],Des).
+
+Des = [1,9,8,5].
