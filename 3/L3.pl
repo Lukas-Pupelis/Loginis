@@ -36,3 +36,18 @@ nr([a,b,c],5,E).
 nr([a,b,c,d,e],3,E).
 nr([a,b,c,d,e],5,E).
 */
+
+% kartojasi(S, K) - K yra elementų sąrašas, kurie kartojasi sąraše S.
+kartojasi(S, K) :-
+    rasti_visus(X, (narys(X, S), sumuoti_pasikartojimus(S, X, C), C > 1), K0),
+    rusiuoti(K0, K).
+
+% sumuoti_pasikartojimus(Sąrašas, Elementas, Suma) - Suma yra skaičius, kiek kartų
+% Elementas pasirodo Sąraše.
+sumuoti_pasikartojimus([], _, 0).
+sumuoti_pasikartojimus([X|Xs], X, N) :-
+    sumuoti_pasikartojimus(Xs, X, N1),
+    N is N1 + 1.
+sumuoti_pasikartojimus([Y|Ys], X, N) :-
+    X \= Y,
+    sumuoti_pasikartojimus(Ys, X, N).
