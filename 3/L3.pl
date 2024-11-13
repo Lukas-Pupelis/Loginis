@@ -45,8 +45,20 @@ R = [a,d].
 
 % kartojasi(S, K) - K yra elementų sąrašas, kurie kartojasi sąraše S.
 kartojasi(S, K) :-
-    rasti_visus(X, (narys(X, S), sumuoti_pasikartojimus(S, X, C), C > 1), K0),
+    rasti_visus(S, S, K0),
     rusiuoti(K0, K).
+
+% rasti_visus(Sąrašas, Originalus Sąrašas, K0) - Surenka visus elementus, kurie
+% kartojasi Originalus Sąrašas, į K0.
+rasti_visus([], _, []).
+rasti_visus([X|Xs], Original, [X|Ks]) :-
+    sumuoti_pasikartojimus(Original, X, C),
+    C > 1,
+    rasti_visus(Xs, Original, Ks).
+rasti_visus([X|Xs], Original, Ks) :-
+    sumuoti_pasikartojimus(Original, X, C),
+    C =< 1,
+    rasti_visus(Xs, Original, Ks).
 
 % sumuoti_pasikartojimus(Sąrašas, Elementas, Suma) - Suma yra skaičius, kiek kartų
 % Elementas pasirodo Sąraše.
@@ -57,3 +69,23 @@ sumuoti_pasikartojimus([X|Xs], X, N) :-
 sumuoti_pasikartojimus([Y|Ys], X, N) :-
     X \= Y,
     sumuoti_pasikartojimus(Ys, X, N).
+
+% rusiuoti(K0, K) - Rūšiuoja sąrašą K0 ir pašalina dubliavimus, rezultatas K.
+rusiuoti([], []).
+rusiuoti([X|Xs], [X|Ks]) :-
+    pasalinti_visas(X, Xs, Rest),
+    rusiuoti(Rest, Ks).
+
+% pasalinti_visas(Elementas, Sąrašas, Rezultatas) - Pašalina visus Elementus
+% pasikartojančius sąraše Sąrašas, rezultatas Rezultatas.
+pasalinti_visas(_, [], []).
+pasalinti_visas(X, [X|Ys], Zs) :-
+    pasalinti_visas(X, Ys, Zs).
+pasalinti_visas(X, [Y|Ys], [Y|Zs]) :-
+    X \= Y,
+    pasalinti_visas(X, Ys, Zs).
+/*
+Pvz
+kartojasi([a,b,a,d,a,d],R).
+kartojasi([a,b,l,l,a,d,a,d],R).
+*/
