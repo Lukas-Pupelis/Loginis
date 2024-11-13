@@ -38,7 +38,7 @@ nr([a,b,c,d,e],5,E).
 */
 
 /*
-kartojasi(S,R) - sąrašas R susideda iš duotojo sąrašo S pasikartojančių elementų. Pavyzdžiui:
+3.4 kartojasi(S,R) - sąrašas R susideda iš duotojo sąrašo S pasikartojančių elementų. Pavyzdžiui:
 ?- kartojasi([a,b,a,d,a,d],R).
 R = [a,d].
 */
@@ -92,7 +92,8 @@ kartojasi([],R).
 kartojasi([l,a,b],R).
 */
 
-/*is_sesiolik(Ses,Des) - Ses yra skaičius vaizduojami šešioliktainių skaitmenų sąrašu.
+/* 
+4.4. is_sesiolik(Ses,Des) - Ses yra skaičius vaizduojami šešioliktainių skaitmenų sąrašu.
 Des - tas pats skaičiaus, vaizduojamas dešimtainių skaitmenų sąrašu. Pavyzdžiui:
 ?- is_sesiolik([7,c,1],Des).
 Des = [1,9,8,5].*/
