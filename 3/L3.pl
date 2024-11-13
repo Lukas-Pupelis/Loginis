@@ -37,6 +37,12 @@ nr([a,b,c,d,e],3,E).
 nr([a,b,c,d,e],5,E).
 */
 
+/*
+kartojasi(S,R) - sąrašas R susideda iš duotojo sąrašo S pasikartojančių elementų. Pavyzdžiui:
+?- kartojasi([a,b,a,d,a,d],R).
+R = [a,d].
+*/
+
 % kartojasi(S, K) - K yra elementų sąrašas, kurie kartojasi sąraše S.
 kartojasi(S, K) :-
     rasti_visus(X, (narys(X, S), sumuoti_pasikartojimus(S, X, C), C > 1), K0),
