@@ -73,8 +73,8 @@ sumuoti_pasikartojimus([Y|Ys], X, N) :-
 % rusiuoti(K0, K) - Rūšiuoja sąrašą K0 ir pašalina dubliavimus, rezultatas K.
 rusiuoti([], []).
 rusiuoti([X|Xs], [X|Ks]) :-
-    pasalinti_visas(X, Xs, Rest),
-    rusiuoti(Rest, Ks).
+    pasalinti_visas(X, Xs, Likes),
+    rusiuoti(Likes, Ks).
 
 % pasalinti_visas(Elementas, Sąrašas, Rezultatas) - Pašalina visus Elementus
 % pasikartojančius sąraše Sąrašas, rezultatas Rezultatas.
