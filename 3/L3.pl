@@ -52,12 +52,12 @@ kartojasi(S, K) :-
 % kartojasi Originalus Sąrašas, į K0.
 rasti_visus([], _, []).
 rasti_visus([X|Xs], Original, [X|Ks]) :-
-    sumuoti_pasikartojimus(Original, X, C),
-    C > 1,
+    sumuoti_pasikartojimus(Original, X, Count),
+    Count > 1,
     rasti_visus(Xs, Original, Ks).
 rasti_visus([X|Xs], Original, Ks) :-
-    sumuoti_pasikartojimus(Original, X, C),
-    C =< 1,
+    sumuoti_pasikartojimus(Original, X, Count),
+    Count =< 1,
     rasti_visus(Xs, Original, Ks).
 
 % sumuoti_pasikartojimus(Sąrašas, Elementas, Suma) - Suma yra skaičius, kiek kartų
@@ -88,4 +88,6 @@ pasalinti_visas(X, [Y|Ys], [Y|Zs]) :-
 Pvz
 kartojasi([a,b,a,d,a,d],R).
 kartojasi([a,b,l,l,a,d,a,d],R).
+kartojasi([],R).
+kartojasi([l,a,b],R).
 */
