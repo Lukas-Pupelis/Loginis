@@ -73,21 +73,77 @@ sumuoti_pasikartojimus([Y|Ys], X, N) :-
 % rusiuoti(K0, K) - Rūšiuoja sąrašą K0 ir pašalina dubliavimus, rezultatas K.
 rusiuoti([], []).
 rusiuoti([X|Xs], [X|Ks]) :-
-    pasalinti_visas(X, Xs, Likes),
+    pasalinti_visus(X, Xs, Likes),
     rusiuoti(Likes, Ks).
 
-% pasalinti_visas(Elementas, Sąrašas, Rezultatas) - Pašalina visus Elementus
+% pasalinti_visus(Elementas, Sąrašas, Rezultatas) - Pašalina visus Elementus
 % pasikartojančius sąraše Sąrašas, rezultatas Rezultatas.
-pasalinti_visas(_, [], []).
-pasalinti_visas(X, [X|Ys], Zs) :-
-    pasalinti_visas(X, Ys, Zs).
-pasalinti_visas(X, [Y|Ys], [Y|Zs]) :-
+pasalinti_visus(_, [], []).
+pasalinti_visus(X, [X|Ys], Zs) :-
+    pasalinti_visus(X, Ys, Zs).
+pasalinti_visus(X, [Y|Ys], [Y|Zs]) :-
     X \= Y,
-    pasalinti_visas(X, Ys, Zs).
+    pasalinti_visus(X, Ys, Zs).
 /*
 Pvz
 kartojasi([a,b,a,d,a,d],R).
 kartojasi([a,b,l,l,a,d,a,d],R).
 kartojasi([],R).
 kartojasi([l,a,b],R).
+*/
+
+/*is_sesiolik(Ses,Des) - Ses yra skaičius vaizduojami šešioliktainių skaitmenų sąrašu.
+Des - tas pats skaičiaus, vaizduojamas dešimtainių skaitmenų sąrašu. Pavyzdžiui:
+?- is_sesiolik([7,c,1],Des).
+Des = [1,9,8,5].*/
+
+is_sesiolik(Ses, Des) :-
+    sesioliktainiu_sarasas_i_skaicius(Ses, Skaicius),
+    skaicius_i_skaitmenu_sarasas(Skaicius, Des).
+
+% Konvertuoja šešioliktainių skaitmenų sąrašą į skaitmeninę reikšmę
+sesioliktainiu_sarasas_i_skaicius(Ses, Skaicius) :-
+    sesioliktainiu_sarasas_i_skaicius(Ses, 0, Skaicius).
+
+sesioliktainiu_sarasas_i_skaicius([], Sukaupta_Reiksme, Sukaupta_Reiksme).
+sesioliktainiu_sarasas_i_skaicius([Skaitmuo|Kitas], Sukaupta_Reiksme, Skaicius) :-
+    sesioliktainio_skaitmens_reiksme(Skaitmuo, Reiksme),
+    Sukaupta_Reiksme1 is Sukaupta_Reiksme * 16 + Reiksme,
+    sesioliktainiu_sarasas_i_skaicius(Kitas, Sukaupta_Reiksme1, Skaicius).
+
+% Susieja vieną šešioliktainį skaitmenį su jo skaitine verte
+sesioliktainio_skaitmens_reiksme(Skaitmuo, Reiksme) :-
+    integer(Skaitmuo),
+    Skaitmuo >= 0,
+    Skaitmuo =< 9,
+    Reiksme is Skaitmuo.
+
+sesioliktainio_skaitmens_reiksme(a, 10).
+sesioliktainio_skaitmens_reiksme(b, 11).
+sesioliktainio_skaitmens_reiksme(c, 12).
+sesioliktainio_skaitmens_reiksme(d, 13).
+sesioliktainio_skaitmens_reiksme(e, 14).
+sesioliktainio_skaitmens_reiksme(f, 15).
+
+% Konvertuoja skaitmeninę reikšmę į dešimtainių skaitmenų sąrašą
+skaicius_i_skaitmenu_sarasas(0, [0]).
+skaicius_i_skaitmenu_sarasas(Skaicius, Skaitmenys) :-
+    Skaicius > 0,
+    skaicius_i_skaitmenu_sarasas_pagalbinis(Skaicius, [], Skaitmenys).
+
+skaicius_i_skaitmenu_sarasas_pagalbinis(0, Sukaupta_Reiksme, Sukaupta_Reiksme).
+skaicius_i_skaitmenu_sarasas_pagalbinis(Skaicius, Sukaupta_Reiksme, Skaitmenys) :-
+    Skaicius > 0,
+    Skaitmuo is Skaicius mod 10,
+    NaujasSkaicius is Skaicius // 10,
+    skaicius_i_skaitmenu_sarasas_pagalbinis(NaujasSkaicius, [Skaitmuo|Sukaupta_Reiksme], Skaitmenys).
+
+/*Pvz.
+is_sesiolik([7,c,1],Des).
+is_sesiolik([a,c,1],Des).
+is_sesiolik([1,1,1],Des).
+is_sesiolik([1,1],Des).
+is_sesiolik([a,c],Des).
+is_sesiolik([],Des).
+is_sesiolik([a],Des).
 */
