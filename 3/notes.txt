@@ -1,0 +1,101 @@
+Lyginiai base case - tuščias yra teisingas. Be jo neveikia, nes reikia pereiti per visą sąrašą.
+	Recursive case - tikrinam pirmą sąrašo elementą (head) ar jis lyginis. Jei taip, rekursiškai kreipiamės
+tol, kol arba sutinkam nelyginį skaičių, arba pereinam visus elementus ir sutinkam tuščią sąrašą.
+
+Sąrašo nr elementas.
+
+Base case - Pirmas sąrašo elementas yra reikiamas elementas. ! nutraukia grįžimą atgal (backtracking).
+Recursive case - imam sąrašo uodegą, nes base case nepavyko. Tikrinam, ar N > 0. Jei taip, tada minusuojam N ir
+kreipiamės į predikatą rekursiškai paduodami uodegą kaip sąrašą, sumažintą N reikšmę kaip tikrą reikšmę ir E kaip
+elementą, kurio ieškome.
+
+kartojasi - K yra elementų sąrašas, kurie kartojasi sąraše S.
+
+kartojasi predikatas iš pradžių kreipiasi į rasti visus, po to į rūšiuoti.
+
+	rasti visus.
+
+	Base case - sąrašas tuščias, rezultatas tuščias sąrašas.
+
+	Recursive case 1: jei pasikartojimų skaičius viršija 1(skaičiuoja predikatas sumuoti_pasikartojimus),
+	X einamasis elementas yra įdedamas į pasikartojančių
+	elementų sąrašą K ir predikatas toliau ieško pasikartojančių elementų.
+
+	Recursive case 2: jei pasikartojimų skaičius neviršija 1(skaičiuoja predikatas sumuoti_pasikartojimus),
+	X einamasis elementas nėra dedamas į pasikartojančių elementų sąrašą(yra ignoruojamas), predikatas toliau
+	ieško pasikartojančių elementų.
+
+	sumuoti_pasikartojimus
+
+	Base case - jei sąrašas tuščias, grąžinam 0.
+
+	Recursive case 1: jei sąrašo pirmas elementas atitinka ieškomą elementą, predikatas rekursiškai iškviečia
+	pats save, paduodamas uodegą kaip sąrašą. Rekursijai grąžinus reikšmę, prie jos prideda 1.
+	Negalime pakeisti tvarkos, nes tuomet argumentas nesukuriamas.
+
+	Recursive case 2: jei sąrašo pirmas elementas neatitinka ieškomo elemento, predikatas nekeičia sumos ir
+	rekursiškai kreipiasi į save, paduodamas uodegą kaip sąrašą, ieškomą elementą tokį patį ir tokią pačią sumą.
+
+	rūšiuoti.
+
+	Base case - jei sąrašas tuščias, išrūšiuotas sąrašas irgi tuščias.
+
+	Recursive case: pirmas elementas yra įdedamas į K rezultatų sąrašą.
+	Tuomet kreipiamasi į predikatą pašalinti_visus,
+	kad būtų pašalinti visi X dublikatai iš sąrašo uodegos. sukuriamas sąrašas Likęs,
+	kuris rekursiškai paduodamas į predikatą rūšiuoti.
+
+	pašalinti_visus.
+
+	Base case - sąrašas tuščias, rezultatas irgi tuščias.
+
+	Recursive case 1: jei sąrašo galva sutampa su ieškomu elementu, rekursiškai kreipiamės į predikatą
+	su sąrašo uodega, elementas praleidžiamas.
+
+	Recursive case 2: jei sąrašo galva nesutampa su ieškomu elementu, rekursiškai kreipiamės į predikatą
+	su sąrašo uodega, elementas pridedamas į rezultatų sąrašą. 
+
+is_sesiolik
+
+Verčiam kiekvieną šešioliktainio skaičiaus skaitmenų sąrašą į dešimtainio skaičiaus skaitmenų sąrašą.
+
+is_sesiolik iš pradžių kreipiasi į sesioliktainiu_sarasas_i_skaicius, po to į skaicius_i_skaitmenu_sarasas
+
+	sesioliktainiu_sarasas_i_skaicius.
+
+	Inicializavimas - predikatas kreipiasi į save su trimis kintamaisiais, antrasis yra skaitliukas.
+	
+	Base case - jei sąrašas tuščias, Sukaupta_Reiksme yra galutinė dešimtainė šešioliktainio skaičiaus reikšmė.
+
+	Recursive case - Skaitmuo yra einamasis šešioliktainis skaitmuo, o Kitas yra likusių skaitmenų sąrašas.
+	Kreipiamės į predikatą sesioliktainio_skaitmens_reiksme, kuris randa kintamojo Skaitmuo dešimtainę
+	reikšmę. Sukaupta_Reiksme1 dauginama iš 16 ir prie jos pridedama Reiksme. Predikatas kreipiasi į save
+	su skaitmenų sąrašo uodega.
+
+	sesioliktainio_skaitmens_reiksme.
+
+	Jei šešioliktainis skaičius yra tarp 0 ir 9, jis yra prilyginamas atitinkamam dešimtainiui skaičiui nuo 0
+	iki 9. Jei tai raidė (a-f), naudojantis faktų aibe, šešioliktainis skaičius priskiriamas dešimtainiui
+	skaičiui (10-15).
+
+	skaicius_i_skaitmenu_sarasas.
+
+	Jei kintamasis Skaicius yra 0, tai skaitmuo irgi yra 0. Jei Skaicius didesnis už 0, kreipiamės į predikatą
+	skaicius_i_skaitmenu_sarasas_pagalbinis su skaičiumi, tuščiu sąrašu ir rezultatų sąrašu Skaitmenys.
+
+	skaicius_i_skaitmenu_sarasas_pagalbinis.
+
+	Base case - jei Skaicius = 0, tai Sukaupta_Reiksme yra unifikuojama su rezultatų sąrašu Skaitmenys.
+
+	Recursive case: Skaitmuo skaičiuojamas Skaičių dalijant: Skaicius mod 10, taip gaunamas paskutinis skaičius.
+	NaujasSkaicius yra Skaicius //10, taip yra pašalinamas paskutinis skaitmuo iš kintamojo Skaicius.
+	Skaitmuo yra įdedamas į sąrašo Sukaupta_Reiksme priekį.
+	Rekursija tęsiasi, kol patenkinama pradinė sąlyga.
+	
+
+
+
+
+	
+
+

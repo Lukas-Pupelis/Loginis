@@ -46,7 +46,8 @@ R = [a,d].
 % kartojasi(S, K) - K yra elementų sąrašas, kurie kartojasi sąraše S.
 kartojasi(S, K) :-
     rasti_visus(S, S, K0),
-    rusiuoti(K0, K).
+    rusiuoti(K0, K),
+    !.
 
 % rasti_visus(Sąrašas, Originalus Sąrašas, K0) - Surenka visus elementus, kurie
 % kartojasi Originalus Sąrašas, į K0.
@@ -77,7 +78,7 @@ rusiuoti([X|Xs], [X|Ks]) :-
     rusiuoti(Likes, Ks).
 
 % pasalinti_visus(Elementas, Sąrašas, Rezultatas) - Pašalina visus Elementus
-% pasikartojančius sąraše Sąrašas, rezultatas Rezultatas.
+% pasikartojančius sąraše Sąrašas, rezultatas yra sąrašas Rezultatas.
 pasalinti_visus(_, [], []).
 pasalinti_visus(X, [X|Ys], Zs) :-
     pasalinti_visus(X, Ys, Zs).
@@ -100,8 +101,8 @@ Des = [1,9,8,5].*/
 
 is_sesiolik(Ses, Des) :-
     sesioliktainiu_sarasas_i_skaicius(Ses, Skaicius),
-    skaicius_i_skaitmenu_sarasas(Skaicius, Des).
-
+    skaicius_i_skaitmenu_sarasas(Skaicius, Des),
+    !.
 % Konvertuoja šešioliktainių skaitmenų sąrašą į skaitmeninę reikšmę
 sesioliktainiu_sarasas_i_skaicius(Ses, Skaicius) :-
     sesioliktainiu_sarasas_i_skaicius(Ses, 0, Skaicius).
