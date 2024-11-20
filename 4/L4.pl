@@ -54,15 +54,21 @@ edges_do_not_cross([E|Es], Assignment) :-
     \+ (member(E2, Es), edges_cross(E, E2, Assignment)),
     edges_do_not_cross(Es, Assignment).
 
-% Second predicate: Print the embedding in a readable format
-print_embedding(Assignment) :-
-    writeln('Graph Embedding:'),
+% Second predicate: Output the embedding in DOT format
+print_embedding(Vertices, Edges, Assignment) :-
+    writeln('graph G {'),
+    writeln('  node [shape=circle, fixedsize=true, width=0.5];'),
+    % Output vertex positions
     forall(member(pos(V, X, Y), Assignment),
-           format('Vertex ~w at position (~w, ~w)~n', [V, X, Y])).
+           format('  "~w" [pos="~w,~w!"];\n', [V, X, Y])),
+    % Output edges
+    forall(member((V1, V2), Edges),
+           format('  "~w" -- "~w";\n', [V1, V2])),
+    writeln('}').
 
 % Example usage:
 % Define your graph by listing vertices and edges
-% ?- Vertices = [a, b, c, d],
-%    Edges = [(a, b), (b, c), (c, d), (d, a)],
+% ?- Vertices = [a, b, c, d, e],
+%    Edges = [(a, b), (b, c), (c, d), (d, e), (e, a), (a, c), (b, d)],
 %    find_embedding(Vertices, Edges, Assignment),
-%    print_embedding(Assignment).
+%    print_embedding(Vertices, Edges, Assignment).
