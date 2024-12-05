@@ -1,74 +1,113 @@
-% Main predicate: Find a planar embedding of the graph
-find_embedding(Vertices, Edges, Assignment) :-
-    generate_positions(Vertices, Positions),
-    assign_positions(Vertices, Positions, Assignment),
-    edges_do_not_cross(Edges, Assignment).
+/*  Autorius: Lukas Pupelis 2110612
+    4 kursas 4 grupė
+    4 užduotis
+    Variantas:
+    1.Vandens perpylimo uždavinys.
+    Duotos trijų indų talpos, kurios visos yra skirtingos. 
+    Pirmasis indas pilnas vandens, kiti du tušti. 
+    Iš vieno indo į kitą galima perpilti lygiai tiek vandens, kiek telpa kitame inde arba lygiai tiek, 
+    kiek yra pirmajame (žiūrint, kuris dydis mažesnis). 
+    Uždavinio rezultatas - vykdomų perpylimų seka.
+    Nustatykite, kaip galima, perpilant vandenį iš vienų indų į kitus, gauti pirmajame inde tam tikrą vandens kiekį
 
-% Generate possible positions for the vertices
-generate_positions(Vertices, Positions) :-
-    length(Vertices, N),
-    MaxCoord is N * 2, % Adjust grid size based on the number of vertices
-    findall((X, Y), (between(0, MaxCoord, X), between(0, MaxCoord, Y)), PositionsList),
-    list_to_set(PositionsList, Positions).
+    1.2. [S] vanduo perpilamas kas tam tikrą laiko tarpą. 
+    Per šį laiko tarpą iš kiekvieno indo išgaruoja tam tikras pastovus vandens kiekis;
+*/
 
-% Assign positions to vertices without repetition
-assign_positions([], _, []).
-assign_positions([V|Vs], Positions, [pos(V, X, Y)|Assignment]) :-
-    select((X, Y), Positions, RemainingPositions),
-    assign_positions(Vs, RemainingPositions, Assignment).
+% bendras perpylinejimas 
+perpilti((X, Y, Z), (X1, Y1, Z1), (T1, T2, T3), Veiksmas) :-
+    perpilti_is_pirmo_i_antra(X, Y, Z, X1, Y1, Z1, T2, Veiksmas) ;
+    perpilti_is_antro_i_trecia(X, Y, Z, X1, Y1, Z1, T3, Veiksmas) ;
+    perpilti_is_trecio_i_pirma(X, Y, Z, X1, Y1, Z1, T1, Veiksmas);
 
-% Retrieve the position of a vertex from the assignment
-vertex_position(V, [pos(V, X, Y)|_], X, Y).
-vertex_position(V, [_|Rest], X, Y) :-
-    vertex_position(V, Rest, X, Y).
+    perpilti_is_pirmo_i_trecia(X, Y, Z, X1, Y1, Z1, T3, Veiksmas) ;
+    perpilti_is_antro_i_pirma(X, Y, Z, X1, Y1, Z1, T1, Veiksmas) ;
+    perpilti_is_trecio_i_antra(X, Y, Z, X1, Y1, Z1, T2, Veiksmas).
 
-% Determine the orientation of three points
-orientation((X1, Y1), (X2, Y2), (X3, Y3), O) :-
-    Val is (Y2 - Y1) * (X3 - X2) - (X2 - X1) * (Y3 - Y2),
-    (Val > 0  -> O = clockwise;
-     Val < 0  -> O = counterclockwise;
-     Val =:= 0 -> O = colinear).
+% perpylimai 
+perpilti_is_pirmo_i_antra(X, Y, Z, X1, Y1, Z, T2, "1 -> 2") :-
+    X > 0,
+    Y < T2,
+    Perpilama is min(X, T2 - Y),
+    X1 is X - Perpilama,
+    Y1 is Y + Perpilama.
 
-% Check if two line segments cross
-lines_cross(P1, P2, Q1, Q2) :-
-    orientation(P1, P2, Q1, O1),
-    orientation(P1, P2, Q2, O2),
-    orientation(Q1, Q2, P1, O3),
-    orientation(Q1, Q2, P2, O4),
-    O1 \= O2,
-    O3 \= O4.
+perpilti_is_pirmo_i_trecia(X, Y, Z, X1, Y, Z1, T3, "1 -> 3") :-
+    X > 0,
+    Z < T3,
+    Perpilama is min(X, T3 - Z),
+    X1 is X - Perpilama,
+    Z1 is Z + Perpilama.
 
-% Check if two edges cross in the given assignment
-edges_cross((V1, V2), (U1, U2), Assignment) :-
-    \+ member(V1, [U1, U2]),
-    \+ member(V2, [U1, U2]),
-    vertex_position(V1, Assignment, X1, Y1),
-    vertex_position(V2, Assignment, X2, Y2),
-    vertex_position(U1, Assignment, X3, Y3),
-    vertex_position(U2, Assignment, X4, Y4),
-    lines_cross((X1, Y1), (X2, Y2), (X3, Y3), (X4, Y4)).
+perpilti_is_antro_i_trecia(X, Y, Z, X, Y1, Z1, T3, "2 -> 3") :-
+    Y > 0,
+    Z < T3,
+    Perpilama is min(Y, T3 - Z),
+    Y1 is Y - Perpilama,
+    Z1 is Z + Perpilama.
 
-% Ensure that no edges cross in the assignment
-edges_do_not_cross([], _).
-edges_do_not_cross([E|Es], Assignment) :-
-    \+ (member(E2, Es), edges_cross(E, E2, Assignment)),
-    edges_do_not_cross(Es, Assignment).
+perpilti_is_antro_i_pirma(X, Y, Z, X1, Y1, Z, T1, "2 -> 1") :-
+    Y > 0,
+    X < T1,
+    Perpilama is min(Y, T1 - X),
+    Y1 is Y - Perpilama,
+    X1 is X + Perpilama.
 
-% Second predicate: Output the embedding in DOT format
-print_embedding(Vertices, Edges, Assignment) :-
-    writeln('graph G {'),
-    writeln('  node [shape=circle, fixedsize=true, width=0.5];'),
-    % Output vertex positions
-    forall(member(pos(V, X, Y), Assignment),
-           format('  "~w" [pos="~w,~w!"];\n', [V, X, Y])),
-    % Output edges
-    forall(member((V1, V2), Edges),
-           format('  "~w" -- "~w";\n', [V1, V2])),
-    writeln('}').
+perpilti_is_trecio_i_pirma(X, Y, Z, X1, Y, Z1, T1, "3 -> 1") :-
+    Z > 0,
+    X < T1,
+    Perpilama is min(Z, T1 - X),
+    Z1 is Z - Perpilama,
+    X1 is X + Perpilama.
 
-% Example usage:
-% Define your graph by listing vertices and edges
-% ?- Vertices = [a, b, c, d, e],
-%    Edges = [(a, b), (b, c), (c, d), (d, e), (e, a), (a, c), (b, d)],
-%    find_embedding(Vertices, Edges, Assignment),
-%    print_embedding(Vertices, Edges, Assignment).
+perpilti_is_trecio_i_antra(X, Y, Z, X, Y1, Z1, T2, "3 -> 2") :-
+    Z > 0,
+    Y < T2,
+    Perpilama is min(Z, T2 - Y),
+    Y1 is Y + Perpilama,
+    Z1 is Z - Perpilama.
+
+
+% nugaravimas
+garuoti((X, Y, Z), (XG, YG, ZG), Garavimas, (T, _, _)) :-
+    XG is max(0, X - Garavimas),
+    YG is max(0, Y - Garavimas),
+    ZG is max(0, Z - Garavimas),
+    BendrasKiekis is XG + YG + ZG,
+    BendrasKiekis >= T.
+
+% Paieska
+ieskoti(Busena, Aplankyta, Talpos, Tikslas, Garavimas, [(GaruotaBusena, 'Garavimas')|Kelias]) :-
+    garuoti(Busena, GaruotaBusena, Garavimas, Tikslas),
+    \+ member(GaruotaBusena, Aplankyta),
+    ieskoti_po_garavimo(GaruotaBusena, [GaruotaBusena|Aplankyta], Talpos, Tikslas, Garavimas, Kelias).
+
+ieskoti_po_garavimo(Busena, Aplankyta, Talpos, Tikslas, Garavimas, [(KitaBusena, Veiksmas)|Kelias]) :-
+    perpilti(Busena, KitaBusena, Talpos, Veiksmas),
+    \+ member(KitaBusena, Aplankyta),
+    ieskoti(KitaBusena, [KitaBusena|Aplankyta], Talpos, Tikslas, Garavimas, Kelias).
+
+ieskoti_po_garavimo(Tikslas, _, _, Tikslas, _, [(Tikslas, 'Tikslas pasiektas')]).
+
+/* Pradedam paiešką 
+Tn - talpos, 
+I - ieskomas kiekis, 
+G - kiek nugaruoja po perpylimo
+*/
+pradeti(T1, T2, T3, I, G) :-
+    ieskoti_po_garavimo((T1, 0, 0), [], (T1, T2, T3), (I, _, _), G, Kelias),
+    isvedimas([((T1, 0, 0), 'Pradinis:')|Kelias]).
+
+/*
+pradeti(10,5,3,4,1).
+pradeti(8,5,3,2,1).
+
+False: 
+pradeti(8,5,3,6,1).
+*/
+
+% isvedimas
+isvedimas([]).
+isvedimas([(Busena, Veiksmas)|T]) :-
+    write(Veiksmas), write('     '), write(Busena), nl,
+    isvedimas(T).
