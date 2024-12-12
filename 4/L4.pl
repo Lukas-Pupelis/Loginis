@@ -67,7 +67,6 @@ perpilti_is_trecio_i_antra(X, Y, Z, X, Y1, Z1, T2, "3 -> 2") :-
     Y1 is Y + Perpilama,
     Z1 is Z - Perpilama.
 
-
 % nugaravimas
 garuoti((X, Y, Z), (XG, YG, ZG), Garavimas, (T, _, _)) :-
     XG is max(0, X - Garavimas),
@@ -81,11 +80,13 @@ ieskoti(Busena, Talpos, Tikslas, Garavimas, [(GaruotaBusena, 'Garavimas')|Kelias
     garuoti(Busena, GaruotaBusena, Garavimas, Tikslas),
     ieskoti_po_garavimo(GaruotaBusena, Talpos, Tikslas, Garavimas, Kelias).
 
+    ieskoti(Tikslas, _, Tikslas, _, [(Tikslas, 'Tikslas pasiektas')]).
+
 ieskoti_po_garavimo(Busena, Talpos, Tikslas, Garavimas, [(KitaBusena, Veiksmas)|Kelias]) :-
     perpilti(Busena, KitaBusena, Talpos, Veiksmas),
     ieskoti(KitaBusena, Talpos, Tikslas, Garavimas, Kelias).
 
-ieskoti_po_garavimo(Tikslas, _, Tikslas, _, [(Tikslas, 'Tikslas pasiektas')]).
+    ieskoti_po_garavimo(Tikslas, _, Tikslas, _, [(Tikslas, 'Tikslas pasiektas')]).
 
 /* Pradedam paiešką 
 Tn - talpos, 
