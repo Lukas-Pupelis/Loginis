@@ -77,15 +77,15 @@ garuoti((X, Y, Z), (XG, YG, ZG), Garavimas, (T, _, _)) :-
     BendrasKiekis >= T.
 
 % Paieska
-ieskoti(Busena, Aplankyta, Talpos, Tikslas, Garavimas, [(GaruotaBusena, 'Garavimas')|Kelias]) :-
+ieskoti(Busena, Talpos, Tikslas, Garavimas, [(GaruotaBusena, 'Garavimas')|Kelias]) :-
     garuoti(Busena, GaruotaBusena, Garavimas, Tikslas),
-    ieskoti_po_garavimo(GaruotaBusena, [GaruotaBusena|Aplankyta], Talpos, Tikslas, Garavimas, Kelias).
+    ieskoti_po_garavimo(GaruotaBusena, Talpos, Tikslas, Garavimas, Kelias).
 
-ieskoti_po_garavimo(Busena, Aplankyta, Talpos, Tikslas, Garavimas, [(KitaBusena, Veiksmas)|Kelias]) :-
+ieskoti_po_garavimo(Busena, Talpos, Tikslas, Garavimas, [(KitaBusena, Veiksmas)|Kelias]) :-
     perpilti(Busena, KitaBusena, Talpos, Veiksmas),
-    ieskoti(KitaBusena, [KitaBusena|Aplankyta], Talpos, Tikslas, Garavimas, Kelias).
+    ieskoti(KitaBusena, Talpos, Tikslas, Garavimas, Kelias).
 
-ieskoti_po_garavimo(Tikslas, _, _, Tikslas, _, [(Tikslas, 'Tikslas pasiektas')]).
+ieskoti_po_garavimo(Tikslas, _, Tikslas, _, [(Tikslas, 'Tikslas pasiektas')]).
 
 /* Pradedam paiešką 
 Tn - talpos, 
@@ -93,7 +93,7 @@ I - ieskomas kiekis,
 G - kiek nugaruoja po perpylimo
 */
 pradeti(T1, T2, T3, I, G) :-
-    ieskoti_po_garavimo((T1, 0, 0), [], (T1, T2, T3), (I, _, _), G, Kelias),
+    ieskoti_po_garavimo((T1, 0, 0), (T1, T2, T3), (I, _, _), G, Kelias),
     isvedimas([((T1, 0, 0), 'Pradinis:')|Kelias]).
 
 /*
