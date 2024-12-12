@@ -79,12 +79,10 @@ garuoti((X, Y, Z), (XG, YG, ZG), Garavimas, (T, _, _)) :-
 % Paieska
 ieskoti(Busena, Aplankyta, Talpos, Tikslas, Garavimas, [(GaruotaBusena, 'Garavimas')|Kelias]) :-
     garuoti(Busena, GaruotaBusena, Garavimas, Tikslas),
-    \+ member(GaruotaBusena, Aplankyta),
     ieskoti_po_garavimo(GaruotaBusena, [GaruotaBusena|Aplankyta], Talpos, Tikslas, Garavimas, Kelias).
 
 ieskoti_po_garavimo(Busena, Aplankyta, Talpos, Tikslas, Garavimas, [(KitaBusena, Veiksmas)|Kelias]) :-
     perpilti(Busena, KitaBusena, Talpos, Veiksmas),
-    \+ member(KitaBusena, Aplankyta),
     ieskoti(KitaBusena, [KitaBusena|Aplankyta], Talpos, Tikslas, Garavimas, Kelias).
 
 ieskoti_po_garavimo(Tikslas, _, _, Tikslas, _, [(Tikslas, 'Tikslas pasiektas')]).
